@@ -2,7 +2,7 @@ class V1::ProductsQuery < V1::BaseQuery
 
   attr_accessor :products_params
 
-  def initialize(products_params, sort_params, page_params)
+  def initialize(products_params = {}, sort_params = {}, page_params = {})
     @products_params = products_params
     super(sort_params, page_params)
   end

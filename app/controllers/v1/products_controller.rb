@@ -8,7 +8,7 @@ class V1::ProductsController < ApplicationController
   private
 
   def products_params
-    params.fetch(:filter).permit(:category, price: [:gte, :lte])
+    params.fetch(:filter, {}).permit(:category, price: [:gte, :lte])
   end
 
 end
