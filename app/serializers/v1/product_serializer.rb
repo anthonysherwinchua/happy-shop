@@ -6,6 +6,6 @@ class V1::ProductSerializer < V1::BaseSerializer
     :price,
     :sale_price
 
-  belongs_to :category, serializer: V1::PropertyTypeSerializer
+  belongs_to :category, serializer: V1::CategorySerializer
 
 end

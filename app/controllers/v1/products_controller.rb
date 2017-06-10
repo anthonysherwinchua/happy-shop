@@ -1,7 +1,7 @@
 class V1::ProductsController < ApplicationController
 
   def index
-    render status: 200
+    render json: Product.all, each_serializer: ::V1::ProductSerializer
   end
 
 end
