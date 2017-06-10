@@ -15,4 +15,8 @@ RSpec.describe V1::ProductsController, type: :controller do
     expect(get: '/products').to route_to('v1/products#index')
   end
 
+  it do
+    expect(get: '/products/1').to route_to('v1/products#show', id: '1')
+  end
+
 end
