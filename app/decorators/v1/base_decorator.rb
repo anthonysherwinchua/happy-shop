@@ -5,7 +5,7 @@ class V1::BaseDecorator < SimpleDelegator
   class << self
 
     def wrap(collection)
-      collection.map { |record| self.new(record) }
+      collection.map { |record| new(record) }
     end
 
   end
@@ -16,8 +16,3 @@ class V1::BaseDecorator < SimpleDelegator
   end
 
 end
-
-
-
-
-
