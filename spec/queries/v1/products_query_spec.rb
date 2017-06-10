@@ -13,7 +13,7 @@ RSpec.describe V1::ProductsQuery, type: :query do
     let!(:products_1) { create_list(:product, 10) }
     let!(:products_2) { create_list(:product, 10) }
 
-    let(:page_params) { { number: number, size: size} }
+    let(:page_params) { { number: number, size: size } }
 
     describe 'page 1; size 10' do
 

@@ -14,7 +14,22 @@ RSpec.describe V1::ProductsController, type: :controller do
 
     context 'with valid parameters' do
 
-      let(:params) { { filter: { category: category_1.name, min_price: 1, max_price: 100 }, sort: '-price', page: { number: 3, size: 10 } } }
+      let(:params) do
+        {
+          filter: {
+            category: category_1.name,
+            price: {
+              gte: 1,
+              lte: 10
+            }
+          },
+          sort: '-price',
+          page: {
+            number: 3,
+            size: 10
+          }
+        }
+      end
 
       it { is_expected.to have_http_status(200) }
 
@@ -22,7 +37,22 @@ RSpec.describe V1::ProductsController, type: :controller do
 
     context 'with invalid parameters' do
 
-      let(:params) { { filter: { category: category_1.name, min_price: 1, max_price: 100 }, sort: '-name', page: { number: 3, size: 10 } } }
+      let(:params) do
+        {
+          filter: {
+            category: category_1.name,
+            price: {
+              gte: 1,
+              lte: 10
+            }
+          },
+          sort: '-name',
+          page: {
+            number: 3,
+            size: 10
+          }
+        }
+      end
 
       it { is_expected.to have_http_status(422) }
 
