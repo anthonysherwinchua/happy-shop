@@ -46,9 +46,9 @@ Start the application server.
 rails server
 ```
 
-## Access the application
+## Access the Product listing
 
-    curl -i -H "Content-Type: version=1" http://localhost:3000/
+    curl -i -H "Content-Type: version=1" http://localhost:3000/products
 
 ## Testing
 
