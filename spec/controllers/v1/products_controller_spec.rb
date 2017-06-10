@@ -12,9 +12,21 @@ RSpec.describe V1::ProductsController, type: :controller do
     let(:category_2) { create(:category) }
     let!(:products_2) { create_list(:product, 50, category: category_2) }
 
-    let(:params) { { filter: { category: category_1.name, min_price: 1, max_price: 100 }, sort: 'sale_price,-price', page: { number: 3, size: 10 } } }
+    context 'with valid parameters' do
 
-    it { is_expected.to have_http_status(200) }
+      let(:params) { { filter: { category: category_1.name, min_price: 1, max_price: 100 }, sort: '-price', page: { number: 3, size: 10 } } }
+
+      it { is_expected.to have_http_status(200) }
+
+    end
+
+    context 'with invalid parameters' do
+
+      let(:params) { { filter: { category: category_1.name, min_price: 1, max_price: 100 }, sort: '-name', page: { number: 3, size: 10 } } }
+
+      it { is_expected.to have_http_status(422) }
+
+    end
 
   end
 

@@ -152,10 +152,10 @@ RSpec.describe V1::ProductsQuery, type: :query do
 
     describe 'price range filter' do
 
-      let(:product_1) { create(:product, under_sale: false, price: 100, sale_price: 50) }
-      let(:product_2) { create(:product, under_sale: false, price: 200, sale_price: 100) }
-      let(:product_3) { create(:product, under_sale: true, price: 300, sale_price: 150) }
-      let(:product_4) { create(:product, under_sale: true, price: 400, sale_price: 200) }
+      let!(:product_1) { create(:product, under_sale: false, price: 100, sale_price: 50) }
+      let!(:product_2) { create(:product, under_sale: false, price: 200, sale_price: 100) }
+      let!(:product_3) { create(:product, under_sale: true, price: 300, sale_price: 150) }
+      let!(:product_4) { create(:product, under_sale: true, price: 400, sale_price: 200) }
 
       context 'when price is set to be greater than or equal to 150' do
 
@@ -168,37 +168,35 @@ RSpec.describe V1::ProductsQuery, type: :query do
           ]
         end
 
-        it { expect(subject.call).to contain_exactly(*result) }
+        it { expect(subject.call).to eq(result) }
 
       end
 
       context 'when price is set to be less than or equal to 150' do
 
-        let(:products_params) { { price: { gte: 150 } } }
+        let(:products_params) { { price: { lte: 150 } } }
         let(:result) do
           [
             product_1,
-            product_2,
             product_3
           ]
         end
 
-        it { expect(subject.call).to contain_exactly(*result) }
-
+        it { expect(subject.call).to eq(result) }
 
       end
 
       context 'when price is set to be between 100 and 150' do
 
-        let(:products_params) { { price: { gte: 100, lte: 150 } } }
+        let(:products_params) { { price: { gte: 200, lte: 250 } } }
         let(:result) do
           [
-            product_1,
-            product_3
+            product_2,
+            product_4
           ]
         end
 
-        it { expect(subject.call).to contain_exactly(*result) }
+        it { expect(subject.call).to eq(result) }
 
       end
 
