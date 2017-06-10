@@ -1,5 +1,5 @@
 files = %w(
-
+  categories
 )
 
 files.each do |file|
