@@ -1,5 +1,6 @@
 files = %w(
-
+  categories
+  products
 )
 
 files.each do |file|
