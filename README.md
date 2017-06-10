@@ -46,9 +46,9 @@ Start the application server.
 rails server
 ```
 
-## Access the Product listing
+## API Documentation
 
-    curl -i -H "Content-Type: version=1" http://localhost:3000/products
+    https://github.com/anthonysherwinchua/happy-shop/wiki/API-Documentation
 
 ## Testing
 
