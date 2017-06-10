@@ -27,6 +27,9 @@ module HappyShop
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
-    config.autoload_paths += [Rails.root.join('app', 'constraints')]
+    config.autoload_paths += [
+      Rails.root.join('app', 'constraints'),
+      Rails.root.join('app', 'decorators')
+    ]
   end
 end
