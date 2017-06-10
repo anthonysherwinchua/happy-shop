@@ -1,8 +1,12 @@
 class V1::ProductsController < ApplicationController
 
   def index
-    products = V1::ProductsQuery.new(products_params, params[:sort], page_params).call
-    render json: V1::ProductDecorator.wrap(products), each_serializer: ::V1::ProductSerializer
+    form = V1::ProductsForm.new(products_params, params[:sort], page_params)
+    if form.save
+      render json: V1::ProductDecorator.wrap(form.products), each_serializer: ::V1::ProductSerializer
+    else
+      render json: form, serializer: ActiveModel::Serializer::ErrorSerializer, status: :unprocessable_entity
+    end
   end
 
   private

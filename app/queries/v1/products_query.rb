@@ -23,27 +23,26 @@ class V1::ProductsQuery < V1::BaseQuery
 
   def filter_by_price_range(products, price_range)
     return products if price_range.blank?
-    filter_by_price_gte(products, price_range[:gte])
-    filter_by_price_lte(products, price_range[:lte])
+    products = filter_by_price_gte!(products, price_range[:gte])
+    products = filter_by_price_lte!(products, price_range[:lte])
     products
   end
 
-  def filter_by_price_gte(products, price)
+  def filter_by_price_gte!(products, price)
     filter_by_price(products, price, '>=')
   end
 
-  def filter_by_price_lte(products, price)
+  def filter_by_price_lte!(products, price)
     filter_by_price(products, price, '<=')
   end
 
   def filter_by_price(products, price, operator)
     return products if price.blank?
-    products.where(
-      Product
-        .where(Product.where(under_sale: false).where("price #{operator} ?", price).where_values_hash.reduce(:and))
-        .where(Product.where(under_sale: false).where("sale_price #{operator} ?", price).where_values_hash.reduce(:and))
-        .where_values_hash.reduce(:or)
-    )
+    condition = [
+      "(under_sale IS FALSE AND price #{operator} :price)",
+      "(under_sale IS TRUE AND sale_price #{operator} :price)"
+    ]
+    products.where(condition.join('OR'), price: price)
   end
 
 end
