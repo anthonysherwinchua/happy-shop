@@ -40,16 +40,16 @@ RSpec.describe V1::ProductsController, type: :controller do
       let(:params) do
         {
           filter: {
-            category: category_1.name,
+            category: 'lipsticks',
             price: {
-              gte: 1,
-              lte: 10
+              gte: -1,
+              lte: -2
             }
           },
           sort: '-name',
           page: {
-            number: 3,
-            size: 10
+            number: -3,
+            size: -4
           }
         }
       end
@@ -77,7 +77,6 @@ RSpec.describe V1::ProductsController, type: :controller do
       subject { get :show, params: { id: 100 } }
 
       it { is_expected.to have_http_status(404) }
-
     end
 
   end
