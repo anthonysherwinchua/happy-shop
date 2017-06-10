@@ -2,14 +2,17 @@ require 'rails_helper'
 
 RSpec.describe V1::ProductsQuery, type: :query do
 
-  subject { described_class.new(sort_params, page_params) }
+  subject { described_class.new(products_params, sort_params, page_params) }
+
+  let(:products_params) { {} }
+  let(:sort_params) { nil }
+  let(:page_params) { nil }
 
   context 'with pagination' do
 
     let!(:products_1) { create_list(:product, 10) }
     let!(:products_2) { create_list(:product, 10) }
 
-    let(:sort_params) { nil }
     let(:page_params) { { number: number, size: size} }
 
     describe 'page 1; size 10' do
@@ -48,8 +51,6 @@ RSpec.describe V1::ProductsQuery, type: :query do
     let!(:product_3) { create(:product, name: 'Apple', price: 5) }
     let!(:product_4) { create(:product, name: 'Banana', price: 2) }
     let!(:product_5) { create(:product, name: 'Banana', price: 4) }
-
-    let(:page_params) { nil }
 
     describe 'sort by name, then by price' do
 
@@ -116,6 +117,90 @@ RSpec.describe V1::ProductsQuery, type: :query do
       end
 
       it { expect(subject.call).to eq(result) }
+
+    end
+
+  end
+
+  context 'with filtering' do
+
+    describe 'category filter' do
+
+      let!(:category_1) { create(:category) }
+      let!(:category_2) { create(:category) }
+
+      let!(:products_1) { create_list(:product, 3, category: category_1) }
+      let!(:products_2) { create_list(:product, 2, category: category_2) }
+
+      context 'when category is set to the first one' do
+
+        let(:products_params) { { category: category_1.name } }
+
+        it { expect(subject.call).to contain_exactly(*products_1) }
+
+      end
+
+      context 'when category is set to the second one' do
+
+        let(:products_params) { { category: category_2.name } }
+
+        it { expect(subject.call).to contain_exactly(*products_2) }
+
+      end
+
+    end
+
+    describe 'price range filter' do
+
+      let(:product_1) { create(:product, under_sale: false, price: 100, sale_price: 50) }
+      let(:product_2) { create(:product, under_sale: false, price: 200, sale_price: 100) }
+      let(:product_3) { create(:product, under_sale: true, price: 300, sale_price: 150) }
+      let(:product_4) { create(:product, under_sale: true, price: 400, sale_price: 200) }
+
+      context 'when price is set to be greater than or equal to 150' do
+
+        let(:products_params) { { price: { gte: 150 } } }
+        let(:result) do
+          [
+            product_2,
+            product_3,
+            product_4
+          ]
+        end
+
+        it { expect(subject.call).to contain_exactly(*result) }
+
+      end
+
+      context 'when price is set to be less than or equal to 150' do
+
+        let(:products_params) { { price: { gte: 150 } } }
+        let(:result) do
+          [
+            product_1,
+            product_2,
+            product_3
+          ]
+        end
+
+        it { expect(subject.call).to contain_exactly(*result) }
+
+
+      end
+
+      context 'when price is set to be between 100 and 150' do
+
+        let(:products_params) { { price: { gte: 100, lte: 150 } } }
+        let(:result) do
+          [
+            product_1,
+            product_3
+          ]
+        end
+
+        it { expect(subject.call).to contain_exactly(*result) }
+
+      end
 
     end
 
