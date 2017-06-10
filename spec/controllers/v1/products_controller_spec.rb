@@ -60,4 +60,26 @@ RSpec.describe V1::ProductsController, type: :controller do
 
   end
 
+  describe 'GET #show' do
+
+    context 'with valid id' do
+
+      subject { get :show, params: { id: product } }
+
+      let(:product) { create(:product) }
+
+      it { is_expected.to have_http_status(200) }
+
+    end
+
+    context 'with invalid id' do
+
+      subject { get :show, params: { id: 100 } }
+
+      it { is_expected.to have_http_status(404) }
+
+    end
+
+  end
+
 end

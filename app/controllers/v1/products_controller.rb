@@ -9,6 +9,11 @@ class V1::ProductsController < ApplicationController
     end
   end
 
+  def show
+    @product = Product.find(params[:id])
+    render json: V1::ProductDecorator.new(@product), serializer: ::V1::ProductSerializer
+  end
+
   private
 
   def products_params
