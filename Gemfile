@@ -30,6 +30,7 @@ group :development, :test do
   gem 'byebug', platform: :mri
 
   # For testing
+  gem 'factory_girl_rails'
   gem 'rspec-rails', '~> 3.5'
 end
 
