@@ -46,7 +46,9 @@ Start the application server.
 rails server
 ```
 
-Access the application at [http://localhost:3000/](http://localhost:3000/).
+## Access the application
+
+    curl -i -H "Content-Type: version=1" http://localhost:3000/
 
 ## Testing
 
