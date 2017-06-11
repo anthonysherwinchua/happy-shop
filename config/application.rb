@@ -28,5 +28,7 @@ module HappyShop
     config.api_only = true
 
     config.autoload_paths += [Rails.root.join('app', 'constraints')]
+
+    config.middleware.use Rack::Attack
   end
 end
